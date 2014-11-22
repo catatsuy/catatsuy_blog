@@ -1,0 +1,385 @@
+<div class="post-entry">
+  <p>私は普段 Ubuntu を使っているのですが，複数の端末を使いたくなった時に今まで必要な数の端末を全て起ち上げていました<br>
+    Ubuntu だと <code>Ctrl + Alt + t</code> でメモリの限り無限に端末を起ち上げることができるので，それに任せて好き放題端末を起ち上げていました</p>
+
+  <p>しかしそれだと様々な問題が生じます<br>
+    例えば</p>
+
+  <ul>
+    <li>端末毎にウィンドウが起動しているので 複数の端末を扱う＝複数のウィンドウを扱う になるので面倒
+
+      <ul>
+        <li>特定の端末を見ながら違う端末で作業したい場合，ウィンドウを調整しないといけない</li>
+    </ul></li>
+    <li>コピペがマウス操作でやるしか無い
+
+      <ul>
+        <li>そもそも GUI 環境でなかったら不可能</li>
+    </ul></li>
+    <li>サーバーをいじりたい時に端末毎に ssh すると無駄が多い</li>
+    <li>サーバーから一度切断してしまうと，その端末の状態というのは消えてしまう</li>
+  </ul>
+
+  <p>など多くの問題があります</p>
+
+  <p>これらは<strong>全て <code>tmux</code> で解決できます</strong></p>
+
+  <p>そこで今回は <code>tmux</code> の簡単な使い方と私のキーバインドの設定について紹介したいと思います</p>
+
+  <p><code>screen</code> との違いについては <code>tmux</code> の方が新しいという事と，ライセンスが <code>screen</code> は GPL で <code>tmux</code> は BSD ライセンスなどの違いがあります<br>
+    それに関しては <a href="http://d.hatena.ne.jp/tmatsuu/20090709/1247150771">時代はGNU screenからtmuxへ – Dマイナー志向:</a> などを参考にしてください</p>
+
+  <p>それでは紹介していきます</p>
+
+  <span id="more-243"></span>
+
+  <h3>インストール</h3>
+
+  <p>何はともあれインストールですが，以下のようにすればインストールできます</p>
+
+  <p>Mac</p>
+
+  <pre><code>brew install tmux</code></pre>
+
+  <p>Ubuntu</p>
+
+  <pre><code>apt-get install tmux</code></pre>
+
+  <p>ただし CentOS6 は少し複雑で <code>yum</code> では入りません<br>
+    なのでコンパイルしようかと思ったのですが，コンパイルしても何故か私の環境では動きませんでした</p>
+
+  <p>なので下のサイトを参考にして <code>rpm</code> ファイルから入れることをおすすめします</p>
+
+  <p><a href="http://freevps.us/thread-4311.html" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://freevps.us']);">Tmux Installation on CentOS</a></p>
+
+  <p>またなぜか CentOS6 で起動した <code>tmux</code> が設定ファイルである <code>~/.tmux.conf</code> を読み込んでくれませんでした</p>
+
+  <p>そういうときは <code>C-b</code> してから <code>: source-file ~/.tmux.conf</code> と打つと読み込まれます</p>
+
+  <p>追記（2013/5/17）：</p>
+
+  <p><a href="http://qiita.com/items/6de67eb0deab7f9d7f0b" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://qiita.com']);">CentOS5 での tmux のインストール #tmux – Qiita [キータ]</a></p>
+
+  <p>にインストール方法を書きました</p>
+
+  <h3>設定</h3>
+
+  <p>設定は <code>~/.tmux.conf</code> に書きます</p>
+
+  <p>最初は何も書かずに <code>tmux</code> と打って起動する人が多いと思いますが，デフォルトの状態だとプレフィックスキーに <code>C-b</code> がアサインされています<br>
+    つまりターミナル上で <code>C-b</code> が使えなくなりますのでカーソル移動でかなりきついです<br>
+    速攻で変えましょう</p>
+
+  <p>私は Emacs とかにもほぼ影響を与えない <code>C-z</code> を選びました</p>
+
+  <div>
+    <div><div id="highlighter_346316" class="syntaxhighlighter  bash"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash comments"># Prefix</code></div><div class="line number2 index1 alt1"><code class="bash functions">set</code><code class="bash plain">-option -g prefix C-z</code></div></div></td></tr></tbody></table></div></div>
+  </div>
+
+  <p>それと日本語環境だと必須な気がするので一応 UTF-8 の設定もしておきます（なくてもよい？）</p>
+
+  <div>
+    <div><div id="highlighter_309176" class="syntaxhighlighter  bash"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash comments"># 日本語環境なら必須？？</code></div><div class="line number2 index1 alt1"><code class="bash plain">setw -g utf8 on</code></div><div class="line number3 index2 alt2"><code class="bash functions">set</code> <code class="bash plain">-g status-utf8 on</code></div></div></td></tr></tbody></table></div></div>
+  </div>
+
+  <p>また設定を始める前に以下の設定をしておきましょう</p>
+
+  <div>
+    <div><div id="highlighter_625467" class="syntaxhighlighter  bash"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">bind C-r </code><code class="bash functions">source</code><code class="bash plain">-</code><code class="bash functions">file</code> <code class="bash plain">~/.tmux.conf</code></div></div></td></tr></tbody></table></div></div>
+  </div>
+
+  <p>こうすると <code>C-z C-r</code> をするだけで <code>~/.tmux.conf</code> が再読み込みされるので設定する前に設定しておくととても便利です</p>
+
+  <h4>ステータスバー</h4>
+
+  <p>下に今開いているウィンドウの情報などが載っているステータスバーがあります</p>
+
+  <p>デフォルトのままでもいい人はいいのですが，変え方を説明します</p>
+
+  <div>
+    <div><div id="highlighter_75921" class="syntaxhighlighter  bash"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash functions">set</code> <code class="bash plain">-g status-interval 10</code></div><div class="line number2 index1 alt1"><code class="bash functions">set</code> <code class="bash plain">-g status-</code><code class="bash functions">bg</code> <code class="bash plain">colour100</code></div><div class="line number3 index2 alt2"><code class="bash plain">setw -g window-status-current-</code><code class="bash functions">fg</code> <code class="bash plain">black</code></div><div class="line number4 index3 alt1"><code class="bash plain">setw -g window-status-current-</code><code class="bash functions">bg</code> <code class="bash plain">white</code></div></div></td></tr></tbody></table></div></div>
+  </div>
+
+  <p><code>status-interval</code> はステータスバーが更新される間隔です<br>
+    デフォルトは15ですが，少し長い気がするので10にしています</p>
+
+  <p>以下は色の設定です<br>
+    順に <strong>ステータスバーの背景色</strong>・<strong>現在使っているウィンドウのフォントカラー</strong>・<strong>現在使っているウィンドウの背景色</strong> となっています</p>
+
+  <p>色の指定は</p>
+
+  <pre><code>black, red, green, yellow, blue, magenta, cyan, white</code></pre>
+
+  <p>か <code>colour0 - colour255</code> のいずれかで指定します</p>
+
+  <p><code>colour0 - colour255</code> って番号だと色わからないだろ！という方にとても有用な Perl スクリプトが公開されているので実行してみてください</p>
+
+  <p><a href="http://ytaniike.posterous.com/256-colors-with-tmuxs-colour-numbers" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://ytaniike.posterous.com']);">256 colors with tmux’s colour numbers. – What’s Goin’ On Out There?</a></p>
+
+  <p>Perl が使えないとかがあれば，以下のシェルスクリプトでも簡易的ですが確認できますので実行してみてください</p>
+
+  <div>
+    <div><div id="highlighter_323065" class="syntaxhighlighter  bash"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash keyword">for</code> <code class="bash plain">i </code><code class="bash keyword">in</code> <code class="bash plain">{255..0} ; </code><code class="bash keyword">do</code></div><div class="line number2 index1 alt1"><code class="bash spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="bash functions">printf</code> <code class="bash string">"\x1b[38;5;${i}mcolour${i} "</code></div><div class="line number3 index2 alt2"><code class="bash keyword">done</code></div><div class="line number4 index3 alt1"><code class="bash functions">printf</code> <code class="bash string">"\n"</code></div></div></td></tr></tbody></table></div></div>
+  </div>
+
+  <p>これで以下のような見本が出力されるはずなので参考にしてください</p>
+
+  <p><a href="http://blog.catatsuy.org/wp-content/uploads/2012/11/coloursample.png"><img src="http://blog.catatsuy.org/wp-content/uploads/2012/11/coloursample.png" alt="色見本" title="coloursample" width="559" height="342" class="aligncenter size-full wp-image-246"></a></p>
+
+  <p>ちなみに私のはこんな感じです</p>
+
+  <p><a href="http://blog.catatsuy.org/wp-content/uploads/2012/11/statusbar.png"><img src="http://blog.catatsuy.org/wp-content/uploads/2012/11/statusbar.png" alt="ステータスバー" title="statusbar" width="564" height="20" class="aligncenter size-full wp-image-245"></a></p>
+
+  <p>残りの設定は使い方を説明しながら紹介していきます</p>
+
+  <h3>使い方</h3>
+
+  <h4>ウィンドウ操作</h4>
+
+  <p><code>tmux</code> にはウィンドウとペインという概念があります</p>
+
+  <p>ウィンドウはその1つ1つが端末で，ペインはウィンドウを分割した際に生じる個々の端末のことです<br>
+    つまりウィンドウは複数のペインに分割することができます</p>
+
+  <p>ウィンドウ操作の基本的なキーバインドは以下のようになっています</p>
+
+  <table>
+    <tbody><tr>
+        <td><code>C-z c</code></td><td>新しいウィンドウを作成</td>
+      </tr>
+      <tr>
+        <td><code>C-z n</code></td><td>次(<em>n</em>ext)のウィンドウに移動する</td>
+      </tr>
+      <tr>
+        <td><code>C-z p</code></td><td>前(<em>p</em>revious)のウィンドウに移動する</td>
+      </tr>
+      <tr>
+        <td><code>C-z w</code></td><td>現在のウィンドウ一覧を開く（<code>C-n,p</code>とEnterで選択可能）</td>
+      </tr>
+  </tbody></table>
+
+  <p>ウィンドウ分割などのペイン周りのキーバインドは Emacs からかけ離れているので Emacs に近付ける設定をします</p>
+
+  <div>
+    <div><div id="highlighter_279782" class="syntaxhighlighter  bash"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash comments"># pane-active-border</code></div><div class="line number2 index1 alt1"><code class="bash functions">set</code> <code class="bash plain">-g pane-active-border-</code><code class="bash functions">fg</code> <code class="bash plain">white</code></div><div class="line number3 index2 alt2"><code class="bash comments"># KeyBindings</code></div><div class="line number4 index3 alt1"><code class="bash comments"># pane</code></div><div class="line number5 index4 alt2"><code class="bash plain">unbind 1</code></div><div class="line number6 index5 alt1"><code class="bash plain">bind 1 </code><code class="bash keyword">break</code><code class="bash plain">-pane</code></div><div class="line number7 index6 alt2"><code class="bash plain">bind 2 </code><code class="bash functions">split</code><code class="bash plain">-window -</code><code class="bash functions">v</code></div><div class="line number8 index7 alt1"><code class="bash plain">bind 3 </code><code class="bash functions">split</code><code class="bash plain">-window -h</code></div><div class="line number9 index8 alt2"><code class="bash plain">bind C-k </code><code class="bash functions">kill</code><code class="bash plain">-pane</code></div><div class="line number10 index9 alt1"><code class="bash plain">bind k </code><code class="bash functions">kill</code><code class="bash plain">-window</code></div><div class="line number11 index10 alt2"><code class="bash plain">unbind &amp;</code></div></div></td></tr></tbody></table></div></div>
+  </div>
+
+  <p><code>pane-active-border-fg</code> は現在操作中のペインの周りの線を指定するもので，お気に入りの色に設定するといいと思います</p>
+
+  <p><code># KeyBindings</code> 以下の設定は Emacs っぽくするためのもので，以下のようなキーバインドになります</p>
+
+  <table>
+    <tbody><tr>
+        <td><code>C-z 1</code></td><td>ペインを分解して1つのウィンドウにする</td>
+      </tr>
+      <tr>
+        <td><code>C-z 2</code></td><td>ウィンドウを上下に分割する</td>
+      </tr>
+      <tr>
+        <td><code>C-z 3</code></td><td>ウィンドウを左右に分割する</td>
+      </tr>
+      <tr>
+        <td><code>C-z C-k</code></td><td>現在のペインを kill する</td>
+      </tr>
+      <tr>
+        <td><code>C-z k</code></td><td>ウィンドウを kill する</td>
+      </tr>
+  </tbody></table>
+
+  <p>大分 Emacs に近くてよいです</p>
+
+  <h4>コピーモードなど</h4>
+
+  <p><code>tmux</code> には <strong>コピーモード</strong> があり， <code>C-z [</code> でコピーモードになります</p>
+
+  <p>コピーモードでは Emacs キーバインドがデフォルトで， <code>C-a,e,p,n,f,b,SPACE</code> や <code>M-&gt;,&lt;,w</code> など実に多くの Emacs キーバインドが使えます<br>
+    単純に端末の上の方の出力を見たいというような用途にも使用出来ます</p>
+
+  <p>キーバインドも vi 派の人は</p>
+
+  <div>
+    <div><div id="highlighter_325413" class="syntaxhighlighter  bash"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash functions">set</code><code class="bash plain">-window-option -g mode-keys </code><code class="bash functions">vi</code></div></div></td></tr></tbody></table></div></div>
+  </div>
+
+  <p>と書けば vi キーバインドになるようです</p>
+
+  <p>キーバインドに関して詳しくは以下のサイトの <strong>ウィンドウとペイン</strong> を参考にしてください</p>
+
+  <p><a href="https://bytebucket.org/ns9tks/tmux-ja/wiki/tmux-ja.html" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://bytebucket.org']);">Manpage of TMUX</a></p>
+
+  <p>注意するべきなのはコピーしたものを貼り付けるときは <code>C-z ]</code> であるという点です</p>
+
+  <p>また Mac のターミナルを使用している場合はデフォルトのままでは <strong>META キーとして ESC しか使えません</strong></p>
+
+  <p>そこで環境設定から <strong><code>設定 &gt; キーボード</code></strong> を選択して <strong><code>メタキーとして option キーを使用</code></strong> にチェックを入れると <code>option</code> キーも使えるようになります</p>
+
+  <p><a href="http://blog.catatsuy.org/wp-content/uploads/2012/11/macmeta.png"><img src="http://blog.catatsuy.org/wp-content/uploads/2012/11/macmeta.png" alt="MacのMetaキー設定" title="macmeta" width="638" height="534" class="aligncenter size-full wp-image-247"></a></p>
+
+  <p>また以下のように <code>~/.tmux.conf</code> に書いておくとコピーモードにするのに <code>C-z C-[</code> ，貼り付けるのに <code>C-z C-]</code> となりいちいち Ctrl キーから手を離す必要がなくなって便利です</p>
+
+  <div>
+    <div><div id="highlighter_275484" class="syntaxhighlighter  bash"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash plain">bind -r ^[ copy-mode</code></div><div class="line number2 index1 alt1"><code class="bash plain">bind -r ^] </code><code class="bash functions">paste</code><code class="bash plain">-buffer</code></div></div></td></tr></tbody></table></div></div>
+  </div>
+
+  <h4>attach/detach</h4>
+
+  <p><code>tmux</code> では端末の状態を保存することができます</p>
+
+  <p>まず <code>C-z d</code> をすると <code>tmux</code> を起ち上げた元の端末に戻れます(<strong>detach</strong>)<br>
+    その状態で</p>
+
+  <pre><code>tmux ls</code></pre>
+
+  <p>とすれば現在起ち上がっている <code>tmux</code> のリストが表示されます</p>
+
+  <p>一番右に書かれている番号が0だった場合，それを開くには</p>
+
+  <pre><code>tmux attach -t 0</code></pre>
+
+  <p>のようにします</p>
+
+  <p>この操作を <strong>attach</strong> といいます</p>
+
+  <p><code>attach</code> は <code>a</code> と省略でき，<code>-t</code> 以下のオプションを省略すると一番最後に作成されたものが開きます</p>
+
+  <p>これをうまく利用することでサーバー上の端末の状態を保つことができます</p>
+
+  <h3>まとめ</h3>
+
+  <p>以上のものをまとめたものを gist に貼りました</p>
+
+  <div>
+    <script src="https://gist.github.com/4065439.js"></script><link rel="stylesheet" href="https://gist-assets.github.com/assets/embed-81292f31902b1c0ba82591f0046fa60c.css"><div id="gist4065439" class="gist">
+      <div class="gist-file">
+        <div class="gist-data gist-syntax">
+          
+
+
+
+          <div class="file-data">
+            <table cellpadding="0" cellspacing="0" class="lines highlight">
+              <tbody><tr>
+                  <td class="line-numbers">
+                    <span class="line-number" id="file-tmux-conf-L1" rel="file-tmux-conf-L1">1</span>
+                    <span class="line-number" id="file-tmux-conf-L2" rel="file-tmux-conf-L2">2</span>
+                    <span class="line-number" id="file-tmux-conf-L3" rel="file-tmux-conf-L3">3</span>
+                    <span class="line-number" id="file-tmux-conf-L4" rel="file-tmux-conf-L4">4</span>
+                    <span class="line-number" id="file-tmux-conf-L5" rel="file-tmux-conf-L5">5</span>
+                    <span class="line-number" id="file-tmux-conf-L6" rel="file-tmux-conf-L6">6</span>
+                    <span class="line-number" id="file-tmux-conf-L7" rel="file-tmux-conf-L7">7</span>
+                    <span class="line-number" id="file-tmux-conf-L8" rel="file-tmux-conf-L8">8</span>
+                    <span class="line-number" id="file-tmux-conf-L9" rel="file-tmux-conf-L9">9</span>
+                    <span class="line-number" id="file-tmux-conf-L10" rel="file-tmux-conf-L10">10</span>
+                    <span class="line-number" id="file-tmux-conf-L11" rel="file-tmux-conf-L11">11</span>
+                    <span class="line-number" id="file-tmux-conf-L12" rel="file-tmux-conf-L12">12</span>
+                    <span class="line-number" id="file-tmux-conf-L13" rel="file-tmux-conf-L13">13</span>
+                    <span class="line-number" id="file-tmux-conf-L14" rel="file-tmux-conf-L14">14</span>
+                    <span class="line-number" id="file-tmux-conf-L15" rel="file-tmux-conf-L15">15</span>
+                    <span class="line-number" id="file-tmux-conf-L16" rel="file-tmux-conf-L16">16</span>
+                    <span class="line-number" id="file-tmux-conf-L17" rel="file-tmux-conf-L17">17</span>
+                    <span class="line-number" id="file-tmux-conf-L18" rel="file-tmux-conf-L18">18</span>
+                    <span class="line-number" id="file-tmux-conf-L19" rel="file-tmux-conf-L19">19</span>
+                    <span class="line-number" id="file-tmux-conf-L20" rel="file-tmux-conf-L20">20</span>
+                    <span class="line-number" id="file-tmux-conf-L21" rel="file-tmux-conf-L21">21</span>
+                    <span class="line-number" id="file-tmux-conf-L22" rel="file-tmux-conf-L22">22</span>
+                    <span class="line-number" id="file-tmux-conf-L23" rel="file-tmux-conf-L23">23</span>
+                    <span class="line-number" id="file-tmux-conf-L24" rel="file-tmux-conf-L24">24</span>
+                    <span class="line-number" id="file-tmux-conf-L25" rel="file-tmux-conf-L25">25</span>
+                    <span class="line-number" id="file-tmux-conf-L26" rel="file-tmux-conf-L26">26</span>
+                    <span class="line-number" id="file-tmux-conf-L27" rel="file-tmux-conf-L27">27</span>
+                    <span class="line-number" id="file-tmux-conf-L28" rel="file-tmux-conf-L28">28</span>
+                    <span class="line-number" id="file-tmux-conf-L29" rel="file-tmux-conf-L29">29</span>
+                  </td>
+                  <td class="line-data">
+                    <pre class="line-pre"><div class="line" id="file-tmux-conf-LC1"><span class="pl-c"># Prefix</span>
+                      </div><div class="line" id="file-tmux-conf-LC2">set-option -g prefix C-z
+                      </div><div class="line" id="file-tmux-conf-LC3">&nbsp;
+                      </div><div class="line" id="file-tmux-conf-LC4"><span class="pl-c"># 日本語環境なら必須？？</span>
+                      </div><div class="line" id="file-tmux-conf-LC5">setw -g utf8 on
+                      </div><div class="line" id="file-tmux-conf-LC6">set -g status-utf8 on
+                      </div><div class="line" id="file-tmux-conf-LC7">&nbsp;
+                      </div><div class="line" id="file-tmux-conf-LC8"><span class="pl-c"># status</span>
+                      </div><div class="line" id="file-tmux-conf-LC9">set -g status-interval 10
+                      </div><div class="line" id="file-tmux-conf-LC10">set -g status-bg colour100
+                      </div><div class="line" id="file-tmux-conf-LC11">setw -g window-status-current-fg black
+                      </div><div class="line" id="file-tmux-conf-LC12">setw -g window-status-current-bg white
+                      </div><div class="line" id="file-tmux-conf-LC13">&nbsp;
+                      </div><div class="line" id="file-tmux-conf-LC14"><span class="pl-c"># pane-active-border</span>
+                      </div><div class="line" id="file-tmux-conf-LC15">set -g pane-active-border-fg white
+                      </div><div class="line" id="file-tmux-conf-LC16">&nbsp;
+                      </div><div class="line" id="file-tmux-conf-LC17"><span class="pl-c"># KeyBindings</span>
+                      </div><div class="line" id="file-tmux-conf-LC18"><span class="pl-c"># pane</span>
+                      </div><div class="line" id="file-tmux-conf-LC19">unbind 1
+                      </div><div class="line" id="file-tmux-conf-LC20">bind 1 break-pane
+                      </div><div class="line" id="file-tmux-conf-LC21">bind 2 split-window -v
+                      </div><div class="line" id="file-tmux-conf-LC22">bind 3 split-window -h
+                      </div><div class="line" id="file-tmux-conf-LC23">&nbsp;
+                      </div><div class="line" id="file-tmux-conf-LC24">bind C-r source-file ~/.tmux.conf
+                      </div><div class="line" id="file-tmux-conf-LC25">bind C-k kill-pane
+                      </div><div class="line" id="file-tmux-conf-LC26">bind k kill-window
+                      </div><div class="line" id="file-tmux-conf-LC27">unbind &amp;
+                      </div><div class="line" id="file-tmux-conf-LC28">bind -r ^[ copy-mode
+                      </div><div class="line" id="file-tmux-conf-LC29">bind -r ^] paste-buffer
+                    </div></pre>
+                  </td>
+                </tr>
+            </tbody></table>
+          </div>
+
+        </div>
+        <div class="gist-meta">
+          <a href="https://gist.github.com/catatsuy/4065439/raw/.tmux.conf" style="float:right">view raw</a>
+          <a href="https://gist.github.com/catatsuy/4065439#file-tmux-conf">.tmux.conf</a>
+          hosted with ❤ by <a href="https://github.com">GitHub</a>
+        </div>
+      </div>
+    </div>
+    <noscript>&lt;pre&gt;&lt;code class="language-apacheconf apacheconf"&gt;# Prefix
+      set-option -g prefix C-z
+
+      # 日本語環境なら必須？？
+      setw -g utf8 on
+      set -g status-utf8 on
+
+      # status
+      set -g status-interval 10
+      set -g status-bg colour100
+      setw -g window-status-current-fg black
+      setw -g window-status-current-bg white
+
+      # pane-active-border
+      set -g pane-active-border-fg white
+
+      # KeyBindings
+      # pane
+      unbind 1
+      bind 1 break-pane
+      bind 2 split-window -v
+      bind 3 split-window -h
+
+      bind C-r source-file ~/.tmux.conf
+      bind C-k kill-pane
+      bind k kill-window
+      unbind &amp;amp;
+      bind -r ^[ copy-mode
+      bind -r ^] paste-buffer
+      &lt;/code&gt;&lt;/pre&gt;</noscript>
+  </div>
+
+  <p>最近 <code>tmux</code> がないと生活できなくなってきました<br>
+    皆さんも <code>tmux</code> ぜひ使ってみてください！！</p>
+
+  <p>--追記（2013/01/14）</p>
+
+  <p>Ubuntu には <code>tmux</code> 起動時に <code>.bashrc</code> が実行されていないバグ？がありました</p>
+
+  <p>回避策を見つけたので追記します</p>
+
+  <div>
+    <div><div id="highlighter_976576" class="syntaxhighlighter  bash"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="bash functions">set</code><code class="bash plain">-option -g default-shell </code><code class="bash plain">/bin/bash</code></div><div class="line number2 index1 alt1"><code class="bash functions">set</code><code class="bash plain">-option -g default-</code><code class="bash functions">command</code> <code class="bash plain">/bin/bash</code></div></div></td></tr></tbody></table></div></div>
+  </div>
+
+  <p>と <code>.tmux.conf</code> に追記してください</p>
+
+  <p>もちろん自分が普段使っているシェルに合わせてください</p>
+</div>

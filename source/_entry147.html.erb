@@ -1,0 +1,73 @@
+<div class="post-entry">
+  <p><a href="https://matw.co" target="_blank">なんとなく作りました</a></p>
+  <p>デザインとか突っ込みどころしかないですが，とりあえず使えます</p>
+  <p>というわけで何をするアプリなのか説明します</p>
+  <p><span id="more-147"></span></p>
+  <h3>数式をツイートする</h3>
+  <p>Twitterには数式をツイートする機能はありません<br>
+    というかそもそもHTML自体数式の取り扱いはダメダメで，電子書籍の一形式であるHTMLベースのEPUBなんかも数式が表示できないから理科系で使われることはまずないと見られています<br>
+    というわけで数式を普通にツイートするのは無理なのですが，数式をテキストで表現する場合はTeXというデファクトスタンダードがあります</p>
+  <p>といってもTeXの数式は読める人と読めない人がいる上に，読める人でも長いものは読むのもうんざりしてしまいます</p>
+  <p>ということでTeXの数式を画像にしてツイートできるサービスがあったら嬉しいなーと思って作ってみました<br>
+    画像はいろいろ考えたのですが，Twitter本家が一番簡単だったのでTwitterにアップロードされます</p>
+  <p>最初は<b>『TeXで処理して，それをdvipngかdvips→Ghostscript→ImageMagickとかで画像にして…』</b><br>
+    とかって考えてたんですが，よくよく調べてみるとなんと</p>
+  <p><a href="http://code.google.com/intl/ja/apis/chart/" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://code.google.com']);" target="_blank">TeXの数式を送ると，画像を返してくれるAPI</a><br>
+    を天下のGoogleが用意してくれてます<br>
+    なんでもありますねーGoogleは</p>
+  <p>というわけで折角なんでこれを使いました<br>
+    これの制約としては</p>
+  <ul>
+    <li>日本語が使えない</li>
+    <li>たまに表示が崩れる</li>
+  </ul>
+  <p>けど概ねいい感じの画像を返してくれます</p>
+  <p>太字は無理みたいですが，\begin{array}〜\end{array}環境が使えたりとか，なかなか機能盛りだくさんみたいなのでいろいろ打ってみると面白いかと思います<br>
+    ただあんまり長い数式はダメみたいです<br>
+    太字に関してはもともとTeXのデフォルトのComupter Modernでは微妙な感じになるので（TX/PXFontには全ての文字の太字が含まれていた気がします）しょうがないかと思います</p>
+  <p>というわけで試しに使ってみます</p>
+  <h3>使ってみよう</h3>
+  <p>とりあえず人類の至宝</p>
+  <div><div id="highlighter_266815" class="syntaxhighlighter  latex"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="latex plain">e^{i</code><code class="latex keyword">\theta</code><code class="latex plain">}=</code><code class="latex keyword">\cos</code><code class="latex keyword">\theta</code><code class="latex plain">+i</code><code class="latex keyword">\sin</code><code class="latex keyword">\theta</code></div></div></td></tr></tbody></table></div></div>
+  <p><img src="http://chart.apis.google.com/chart?cht=tx&amp;chl=e%5E%7Bi%5Ctheta%7D%3D%5Ccos%5Ctheta%2Bi%5Csin%5Ctheta" class="aligncenter size-full"></p>
+  <p><a href="http://oku.edu.mie-u.ac.jp/~okumura/texwiki/?%E8%A1%A8%E8%A8%98%E3%81%AE%E5%93%B2%E5%AD%A6%2F\mathrm{d}x%3F" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://oku.edu.mie-u.ac.jp']);" target="_blank">自然対数のeとか虚数のiはローマン体だろ！</a>という方<br>
+    どうやら\mathrmは使えるようですのでご安心を</p>
+  <div><div id="highlighter_698682" class="syntaxhighlighter  latex"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="latex keyword">\mathrm</code><code class="latex plain">{e}^{</code><code class="latex keyword">\mathrm</code><code class="latex plain">{i}</code><code class="latex keyword">\theta</code><code class="latex plain">}=</code><code class="latex keyword">\cos</code><code class="latex keyword">\theta</code><code class="latex plain">+</code><code class="latex keyword">\mathrm</code><code class="latex plain">{i}</code><code class="latex keyword">\sin</code><code class="latex keyword">\theta</code></div></div></td></tr></tbody></table></div></div>
+  <p><img src="http://chart.apis.google.com/chart?cht=tx&amp;chl=%5Cmathrm%7Be%7D%5E%7B%5Cmathrm%7Bi%7D%5Ctheta%7D%3D%5Ccos%5Ctheta%2B%5Cmathrm%7Bi%7D%5Csin%5Ctheta" class="aligncenter size-full"></p>
+  <p>受験シーズンということで大学受験でおなじみの公式を</p>
+  <div><div id="highlighter_860960" class="syntaxhighlighter  latex"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="latex keyword">\displaystyle</code><code class="latex keyword">\sum_</code><code class="latex plain">{k=1}^n k = </code><code class="latex keyword">\frac</code><code class="latex plain">{1}{2}n(n+1)</code><code class="latex keyword">\</code><code class="latex keyword">\</code></div><div class="line number2 index1 alt1"><code class="latex keyword">\displaystyle</code><code class="latex keyword">\sum_</code><code class="latex plain">{k=1}^n k^2 = </code><code class="latex keyword">\frac</code><code class="latex plain">{1}{6}n(n+1)(2n+1)</code><code class="latex keyword">\</code><code class="latex keyword">\</code></div><div class="line number3 index2 alt2"><code class="latex keyword">\displaystyle</code><code class="latex keyword">\sum_</code><code class="latex plain">{k=1}^n k^3 = </code><code class="latex keyword">\</code><code class="latex plain">{</code><code class="latex keyword">\frac</code><code class="latex plain">{1}{2}n(n+1)</code><code class="latex keyword">\</code><code class="latex plain">}^2</code><code class="latex keyword">\</code><code class="latex keyword">\</code></div></div></td></tr></tbody></table></div></div>
+  <p><img src="http://chart.apis.google.com/chart?cht=tx&amp;chl=%5Cdisplaystyle%5Csum_%7Bk%3D1%7D%5En%20k%20%3D%20%5Cfrac%7B1%7D%7B2%7Dn(n%2B1)%5C%5C%0A%5Cdisplaystyle%5Csum_%7Bk%3D1%7D%5En%20k%5E2%20%3D%20%5Cfrac%7B1%7D%7B6%7Dn(n%2B1)(2n%2B1)%5C%5C%0A%5Cdisplaystyle%5Csum_%7Bk%3D1%7D%5En%20k%5E3%20%3D%20%5C%7B%5Cfrac%7B1%7D%7B2%7Dn(n%2B1)%5C%7D%5E2%5C%5C" class="aligncenter size-full"></p>
+  <p>ここで3つ注意をします</p>
+  <h4>改行が使える</h4>
+  <p>\\を書くと改行されます<br>
+    フォームのサイズは（IEでなければ）調整できますので改行を使う場合は大きくした方がいいです<br>
+    ただあんまり長い数式は画像を返してくれなくなりますのでプレビューを見ながら調整してください<br>
+    まあTwitterなので本格的な数式は使わないですよね…</p>
+  <h4>\displaystyleになる条件は謎</h4>
+  <p>TeXは別行立て数式にすると自動的に\displaystyleが適用されますが，このAPIの場合は\displaystyleになったりならなかったりします<br>
+    この条件はかなり謎なので常に\displaystyleを指定した方が良さげです</p>
+  <h4>括弧のサイズは自動調整してくれるみたい</h4>
+  <p>本来TeXは括弧のサイズの自動調整はしてくれないので</p>
+  <div><div id="highlighter_273034" class="syntaxhighlighter  latex"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="latex keyword">\displaystyle</code><code class="latex keyword">\sum_</code><code class="latex plain">{k=1}^n k^3 = </code><code class="latex keyword">\left</code><code class="latex keyword">\</code><code class="latex plain">{</code><code class="latex keyword">\frac</code><code class="latex plain">{1}{2}n(n+1)</code><code class="latex keyword">\right</code><code class="latex keyword">\</code><code class="latex plain">}^2</code><code class="latex keyword">\</code><code class="latex keyword">\</code></div></div></td></tr></tbody></table></div></div>
+  <p>のように括弧の大きさを揃える場合は\left\rightを使います<br>
+    しかしGoogle Chart APIは書かなくても自動でサイズを調整してくれるようです</p>
+  <p>では次は私の好きな運動方程式</p>
+  <div><div id="highlighter_235248" class="syntaxhighlighter  latex"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="latex plain">m</code><code class="latex keyword">\ddot</code><code class="latex plain">{x} = f</code></div></div></td></tr></tbody></table></div></div>
+  <p><img src="http://chart.apis.google.com/chart?cht=tx&amp;chl=m%5Cddot%7Bx%7D%20%3D%20f" class="aligncenter size-full"></p>
+  <p>シンプルです<br>
+    大好きです</p>
+  <p>物理というと私はよく分かりませんが，シュレディンガー方程式なんかも書けるみたいです</p>
+  <div><div id="highlighter_703464" class="syntaxhighlighter  latex"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="latex plain">i</code><code class="latex keyword">\hbar</code><code class="latex keyword">\frac</code><code class="latex plain">{</code><code class="latex keyword">\partial</code><code class="latex plain">}{</code><code class="latex keyword">\partial</code> <code class="latex plain">t}|</code><code class="latex keyword">\psi</code><code class="latex plain">(t)</code><code class="latex keyword">\rangle</code><code class="latex plain">=</code><code class="latex keyword">\hat</code><code class="latex plain">{H}|</code><code class="latex keyword">\psi</code><code class="latex plain">(t)</code><code class="latex keyword">\rangle</code></div></div></td></tr></tbody></table></div></div>
+  <p><img src="http://chart.apis.google.com/chart?cht=tx&amp;chl=i%5Chbar%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial%20t%7D%7C%5Cpsi(t)%5Crangle%3D%5Chat%7BH%7D%7C%5Cpsi(t)%5Crangle" class="aligncenter size-full"></p>
+  <p>こういうのも普通にかけますよーということで</p>
+  <p>マクスウェル方程式も書こうと思ったのですが，積分系は長すぎてダメみたいなので微分系で</p>
+  <div><div id="highlighter_402842" class="syntaxhighlighter  latex"><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="latex keyword">\nabla</code> <code class="latex keyword">\cdot</code> <code class="latex plain">B = 0</code><code class="latex keyword">\</code><code class="latex keyword">\</code></div><div class="line number2 index1 alt1"><code class="latex keyword">\nabla</code> <code class="latex keyword">\times</code> <code class="latex plain">E + </code><code class="latex keyword">\frac</code><code class="latex plain">{</code><code class="latex keyword">\partial</code> <code class="latex plain">B} {</code><code class="latex keyword">\partial</code> <code class="latex plain">t} = 0</code><code class="latex keyword">\</code><code class="latex keyword">\</code></div><div class="line number3 index2 alt2"><code class="latex keyword">\nabla</code> <code class="latex keyword">\cdot</code> <code class="latex plain">D = </code><code class="latex keyword">\rho</code> <code class="latex keyword">\</code><code class="latex keyword">\</code></div><div class="line number4 index3 alt1"><code class="latex keyword">\nabla</code> <code class="latex keyword">\times</code> <code class="latex plain">H - </code><code class="latex keyword">\frac</code><code class="latex plain">{</code><code class="latex keyword">\partial</code> <code class="latex plain">D}{</code><code class="latex keyword">\partial</code> <code class="latex plain">t} = j</code></div></div></td></tr></tbody></table></div></div>
+  <p><img src="http://chart.apis.google.com/chart?cht=tx&amp;chl=%5Cnabla%20%5Ccdot%20B%20%3D%200%5C%5C%0A%5Cnabla%20%5Ctimes%20E%20%2B%20%5Cfrac%7B%5Cpartial%20B%7D%20%7B%5Cpartial%20t%7D%20%3D%200%5C%5C%0A%5Cnabla%20%5Ccdot%20D%20%3D%20%5Crho%20%5C%5C%0A%5Cnabla%20%5Ctimes%20H%20-%20%5Cfrac%7B%5Cpartial%20D%7D%7B%5Cpartial%20t%7D%20%3D%20j" class="aligncenter size-full"></p>
+  <p>ただ太字が使えないのでベクトルとかは表せないのは少し残念かもしれません</p>
+  <h3>まとめ</h3>
+  <p><span style="font-size:xx-large;font-weight:bold;line-height:250%">Googleってすごいよね</span><br>
+    というわけで数式をツイートしたくなったら使ってみてくださいw</p>
+  <p>追記：リニューアルしました<br>
+    詳しくは<a href="http://blog.catatsuy.org/a/196">ここ</a>を見てみてください</p>
+  <p>今後ともよろしくお願いします</p>
+</div>
