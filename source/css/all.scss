@@ -1,0 +1,46 @@
+@charset "utf-8";
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  margin: 15px 0 0;
+  width: 100%;
+  background-color: #f5f5f5;
+}
+
+.container {
+  width: auto;
+  max-width: 680px;
+  padding: 0 15px;
+}
+
+.container .text-muted {
+  margin: 20px 0;
+}
+
+.ca-social-button {
+  margin: 5px 0 0;
+  div {
+    float: left;
+    margin: 0 7px 0 0;
+  }
+}
+
+.post-data {
+  margin: 0 0 80px;
+}
+
+.post-meta {
+  font-size: 12px;
+}
+
+.post-entry {
+  padding: 15px 0 10px;
+}
