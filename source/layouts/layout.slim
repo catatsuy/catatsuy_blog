@@ -9,15 +9,19 @@ html
     /! Use title if it's in the page YAML frontmatter
     title= [current_page.data.title, "catatsuy's Blog"].compact.join(" - ")
     /! Bootstrap core CSS
-    = stylesheet_link_tag "bootstrap", "all"
+    = stylesheet_link_tag "bootstrap.min", "all"
   body
     .container
       .page-header
         h1
           a href="/"
             | catatsuy's Blog
-      div.post-data
-        = yield
+      - if current_page.url != "/"
+        .post-data
+          = yield
+      - else
+        .top-page
+          = yield
     footer.footer
       .container
         .text-muted

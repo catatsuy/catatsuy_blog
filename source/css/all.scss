@@ -33,6 +33,16 @@ body {
   }
 }
 
+.top-page {
+  margin: 20px 0 0;
+  li {
+    line-height: 30px;
+  }
+  a {
+    display: block;
+  }
+}
+
 .post-data {
   margin: 0 0 80px;
 }

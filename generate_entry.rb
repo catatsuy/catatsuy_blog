@@ -38,6 +38,10 @@ entries = [
   },
 ]
 
+# entries.sort {|a, b| b[:id] <=> a[:id] }.each do |e|
+#   puts "  * [#{e[:title]}](./a/#{e[:id]})"
+# end
+
 template = <<EOS
 ---
 title: <%= e[:title] %>
