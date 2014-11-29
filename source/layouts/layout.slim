@@ -23,9 +23,5 @@ html
         .top-page
           = yield
     footer.footer
-      .container
-        .text-muted
-          .copyright
-            | COPYRIGHT © 2011 - #{ Time.now.year } #{ link_to "catatsuy", "http://www.catatsuy.org" } ALL RIGHTS RESERVED.
-          .source
-            | The source code of this site is on #{ link_to "GitHub", "https://github.com/catatsuy/catatsuy_blog", target: "_blank" }.
+      p.text-muted
+        | The source code of this site is on #{ link_to "GitHub", "https://github.com/catatsuy/catatsuy_blog", target: "_blank" }.
